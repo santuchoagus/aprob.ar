@@ -4,6 +4,7 @@
   "description": "aprob.ar webpage",
   "main": "index.js",
   "scripts": {
+    "start": "npm run build && node ./build/server.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
