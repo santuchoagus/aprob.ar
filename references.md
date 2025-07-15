@@ -1,0 +1,1 @@
+- [Suggested node project folder structure](https://medium.com/@jayjethava101/node-js-project-structure-best-practices-and-example-for-clean-code-3e1f5530fd3b)
