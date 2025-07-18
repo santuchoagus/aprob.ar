@@ -4,17 +4,20 @@
   "description": "aprob.ar webpage",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && node ./build/server.js",
+    "start": "npm run build && node --env-file=.env ./build/server.js",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "santuchoagus",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "@types/express": "^5.0.3"
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "typescript": "^5.8.3"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.4"
   }
 }
