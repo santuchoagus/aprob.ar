@@ -2,10 +2,14 @@ import express, { Express, Router } from "express";
 import routes from "./routes/index";
 import { JsonWebTokenError } from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 
 let server : Express = express();
 const PORT : string = process.env.PORT || "8081";
+server.use(bodyParser.urlencoded());
 server.use(cookieParser());
+server.use(express.json());
+
 server.use(routes);
 
 let _token : string | undefined = process.env.JWT_SECRET;

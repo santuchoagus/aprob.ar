@@ -5,14 +5,17 @@ import { Request } from "express";
 const alg : jwt.Algorithm = "HS256";
 const secret : jwt.PrivateKey = process.env.JWT_SECRET!;
 
-export const generateJwt = function(req :  Request): string {
+export const generateJwt = async function(req :  Request): Promise<string> {
+    // Fields guaranteed to exist by previous middleware
+    const username : string = req.body.username;
+    
     const header : jwt.JwtHeader = {
         alg: alg,
     };
 
     const payload : jwt.JwtPayload = {
-        foo: "bar",
-        repo: "github.com/santuchoagus",
+        username: username,
+        subscription: "default",
         exp: Math.floor(Date.now() / 1000) + (1 * 60),
     };
 
@@ -25,7 +28,7 @@ export const generateJwt = function(req :  Request): string {
     return jwt.sign(payload, secret, options);
 }
 
-export const verifyJwt = function (jwtToken : string) : {ok: boolean, jwt? : jwt.Jwt, err? : Error } {
+export const verifyJwt = async function (jwtToken : string) : Promise<{ok: boolean, jwt? : jwt.Jwt, err? : Error }> {
     
     try {
         let decodedJwt : jwt.Jwt = jwt.verify(jwtToken, secret, {algorithms: [alg], complete: true});
