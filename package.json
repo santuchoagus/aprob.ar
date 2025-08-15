@@ -11,13 +11,17 @@
   "author": "santuchoagus",
   "license": "ISC",
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.9",
     "@types/express": "^5.0.3",
     "@types/jsonwebtoken": "^9.0.10",
+    "cookie-parser": "^1.4.7",
     "typescript": "^5.8.3"
   },
   "dependencies": {
+    "@types/pg": "^8.15.5",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.16.4"
+    "mongoose": "^8.16.4",
+    "pg": "^8.16.3"
   }
 }
