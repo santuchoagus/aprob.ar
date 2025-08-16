@@ -1,12 +1,17 @@
-import express, { NextFunction, Router, Response, Request } from "express";
-import { login, loginVerify, loginGet } from "../controllers/auth";
+import express, { NextFunction, Router, Response, Request, RequestHandler } from "express";
+import { login, loginGet, loginVerifyAndAddContext, wrapHandlerContext } from "../controllers/auth";
 
 const router : Router = Router();
 
 
-router.post("/login", login);
+router.post("/login", 
+    login,
+);
 
 
-router.get("/login", loginVerify, loginGet)
+router.get( "/login",
+    loginVerifyAndAddContext,
+    wrapHandlerContext(loginGet),
+)
 
 export default router;

@@ -5,6 +5,10 @@ import { Request } from "express";
 const alg : jwt.Algorithm = "HS256";
 const secret : jwt.PrivateKey = process.env.JWT_SECRET!;
 
+export interface RequestWithContext extends Request {
+    jwt : jwt.Jwt
+}
+
 export const generateJwt = async function(req :  Request): Promise<string> {
     // Fields guaranteed to exist by previous middleware
     const username : string = req.body.username;
@@ -28,13 +32,16 @@ export const generateJwt = async function(req :  Request): Promise<string> {
     return jwt.sign(payload, secret, options);
 }
 
-export const verifyJwt = async function (jwtToken : string) : Promise<{ok: boolean, jwt? : jwt.Jwt, err? : Error }> {
-    
-    try {
-        let decodedJwt : jwt.Jwt = jwt.verify(jwtToken, secret, {algorithms: [alg], complete: true});
-        let decodedPayload : jwt.JwtPayload = decodedJwt.payload as jwt.JwtPayload;
-        return {ok: true, jwt: decodedJwt, err: undefined};
-    } catch(err) {
-        return {ok: false, jwt: undefined, err: err as Error};
-    }
+export const verifyAndDecodeJwt = async function (jwtToken : string) : Promise<jwt.Jwt> {
+    return new Promise<jwt.Jwt>(async function (resolve, reject) {
+        try {
+            const decodedJwt : jwt.Jwt = jwt.verify(jwtToken, secret, {algorithms: [alg], complete: true});
+            resolve(decodedJwt);
+        } catch (err) {
+            if (err instanceof jwt.TokenExpiredError) err = Error("TokenExpiredError");
+            if (err instanceof jwt.NotBeforeError) err = Error("TokenNotActiveError");
+            if (err instanceof jwt.JsonWebTokenError) err = Error("JsonWebTokenError");
+            reject(err);
+        }
+    });
 };
